@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- including axios file in frontend -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>delete page</title>
+    <style>
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; /* Light background color */
+    color: #333; /* Dark text color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#form-body {
+    background-color: #fff; /* White background color */
+    height: 8.5cm;
+    width: 15cm;
+    margin: auto;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    position: relative;
+    bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+input {
+    padding: 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #ccc; /* Light gray border color */
+    height: 1.5rem;
+    width: 100%;
+    margin-top: 6px;
+}
+
+label {
+    font-size: 18px;
+    color: #333; /* Dark text color */
+}
+
+label, input {
+    font-family: sans-serif;
+}
+
+button {
+    font-size: 15px;
+    margin-top: 2rem;
+    cursor: pointer;
+    background-color: #007bff; /* Blue button color */
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+input:focus {
+    outline: 2px solid #007bff; /* Blue outline color on focus */
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #333; /* Dark text color */
+    font-size: 24px;
+    margin-top: 3rem;
+}
+
+.btn-container {
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    margin-top: 2rem;
+    text-decoration: none;
+    color: #333; /* Dark text color */
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+
+
+    </style>
+</head>
+<body>
+
+
+    <form>
+    <div class="form" style="margin-bottom: 20px;">
+        <h3 style="margin-top:50px"> DELETE STUDENT </h3>
+    </div>
+    <div id="form-body">
+
+        <label for="rollno"> Enter Roll Number : </label> <br>
+        <input type="text" name="rollno" id="rollno">
+        
+        <br>
+        <br>
+    
+        <div class="btn-container">
+            <button type="submit" class="submit-btn"> Submit </button>
+
+            <a href="/index"> Go Back To Main Page </a>
+        </div>
+
+    </div>
+    </form>
+
+
+    <script>
+
+        let input = document.querySelector("#rollno") ;
+
+        let btn = document.querySelector(".submit-btn") ;
+
+        btn.addEventListener('click' , async(event)=>{
+            event.preventDefault() ;
+
+            // delete request through axios
+            try{
+                let val = input.value ;
+
+                if(val == ''){
+                    alert("Please enter roll Number") ;
+                    return ;
+                } ;
+
+                try{
+                    let response = await axios.delete(`http://localhost:3000/delete/${val}`);
+                    console.log(response.data) ;
+                    alert(response.data.message) ;
+                }
+                catch(err){
+                    alert("Not Found!!") ;
+                    return ;
+                }
+            }
+            catch(err){
+                console.log("Error in deleting the student") ;
+            }
+
+        })
+
+    </script>
+
+</body>
+</html>

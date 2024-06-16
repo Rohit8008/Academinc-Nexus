@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+
+        <!-- including axios file in frontend -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+<style>
+        body {
+            text-align: center;
+            background-color: #f2f2f2; /* Light background color */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1, h2 {
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: #007bff; /* Blue text color */
+        }
+
+        h2.company {
+            font-size: 30px;
+            text-transform: uppercase;
+            color: #007bff; /* Blue text color */
+        }
+
+        marquee {
+            font-size: 18px;
+            padding: 4px;
+            background-color: #ffc107; /* Yellow background color */
+        }
+
+        button {
+            height: 35px;
+            width: 12rem;
+            font-size: 18px;
+            padding: 5px;
+            margin: 10px 20px 30px 0px; /* Updated margin for vertical alignment */
+            border-radius: 5px;
+            outline: none;
+            border: none;
+            box-shadow: 2px 2px 3px #777; /* Gray shadow */
+            transition: all 0.2s linear;
+            cursor: pointer;
+            background-color: #28a745; /* Green button color */
+            color: #fff; /* White text color */
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .btn-container {
+            margin: 20px auto; /* Updated margin for better spacing */
+            display: flex;
+            flex-direction: column; /* Align buttons vertically */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            margin: 70px auto;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 8px;
+            background-color: #fff; /* White background color */
+            color: #333; /* Dark text color */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+        }
+
+        .btn-container {
+            margin: 80px auto;
+        }
+
+        h2 {
+            font-size: 30px;
+            color: #007bff; /* Blue text color */
+        }
+
+        table {
+            background-color: #007bff; /* Blue background color */
+            color: white;
+            width: 90%;
+            height: auto;
+            border-radius: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 30px;
+        }
+
+        table tr {
+            height: 40px;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0px;
+        }
+
+        .search label {
+            font-size: 20px;
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            color: #333; /* Dark text color */
+        }
+
+        .search input {
+            height: 30px;
+            width: 200px;
+            padding: 0px 14px;
+            font-size: 20px;
+        }
+
+        .getAll-btn, .get-btn {
+            margin-bottom: 20px;
+        }
+
+        .company {
+            font-size: 30px;
+            text-transform: uppercase;
+            color: #007bff; /* Blue text color */
+        }
+
+        .marq {
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #ffc107; /* Yellow text color */
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="margin-left: 37%;"> CampusFlow </h1>
+
+    <h2 class="company" style="margin-left: 45%;"> {{user.companyName}} </h2>
+
+    <div class="btn-container">
+
+        <a href="/addStudentPage"> <button> Register Student </button> </a>
+        <a href="/deleteStudentPage"> <button> Delete Student </button> </a>
+        <a href="/updateStudentPage"> <button> Update Student </button> </a>
+        <a href="/getStudentPage"> <button> Get Student </button> </a>
+        <a href="/searchStudentPage"> <button> Search Student </button> </a>
+        
+    </div>
+
+
+
+
+    <script>
+
+
+        // submit button form 1
+        let btn1 = document.querySelector(".getAll-btn");
+
+        // submit button form 2
+        let btn2 = document.querySelector(".get-btn");
+
+        let input = document.querySelector('#rollno');
+
+
+
+
+        // FORM 2:
+        let nameContainer = document.getElementById('form2-name');
+        let rollContainer = document.getElementById('form2-roll');
+        let emailContainer = document.getElementById('form2-email');
+
+        btn2.addEventListener('click' , async(event)=>{
+            event.preventDefault();
+
+
+            let val = input.value ;
+
+            try{
+                let response = await axios.get(`http://localhost:3000/students/${val}`);
+                console.log(response.data.student) ;
+                let student = response.data.student ;
+                
+                nameContainer.textContent = student.name ;
+                rollContainer.textContent = student.rollno;
+                emailContainer.textContent = student.email ;
+                // alert(response.data.message) ;
+            }
+            catch(err){
+                nameContainer.textContent = "" ;
+                rollContainer.textContent = "" ;
+                emailContainer.textContent = "" ;
+                alert("No Such Student!!");
+                console.log(err) ;
+            }
+        })
+
+
+
+        // FORM 1:
+        let table1 = document.querySelector(".form1-table");
+
+        btn1.addEventListener('click' , async(event)=>{
+            event.preventDefault() ;
+
+            try{
+                let response = await axios.get(`http://localhost:3000/students`);
+                console.log(response.data) ;
+                let data = response.data ;          // contains the array of students info
+
+                table1.innerHTML = `<thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Roll Number</td>
+                        <td>Email</td>
+                    </tr>
+                </thead>` ;
+
+                data.map((stu) => {
+                    let tr = document.createElement('tr') ;
+                    let td1 = document.createElement('td') ;
+                    let td2 = document.createElement('td') ;
+                    let td3 = document.createElement('td') ;
+
+                    td1.textContent = stu.name ;
+                    td2.textContent = stu.rollno;
+                    td3.textContent = stu.email ;
+
+                    tr.appendChild(td1) ;
+                    tr.appendChild(td2) ;
+                    tr.appendChild(td3) ;
+
+                    table1.appendChild(tr) ;
+                })
+                
+
+            }
+            catch(err){
+                console.log("Error aaya hai!!") ;
+            }
+
+        })
+
+    </script>
+
+
+</body>
+</html>
